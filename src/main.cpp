@@ -63,8 +63,11 @@ int main() {
     wc.lpszClassName = "MandelbrotClass";
     RegisterClass(&wc);
 
-    HWND hwnd = CreateWindowEx(0, "MandelbrotClass", "Fractalis | Mandelbrot set pattern", WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, CW_USEDEFAULT, WIDTH, HEIGHT, nullptr, nullptr, hInstance, nullptr);
+    HWND hwnd = CreateWindowEx(
+        0, "MandelbrotClass", "Mandelbrot Set",
+        WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU, // Remove WS_SIZEBOX to disable resizing
+        CW_USEDEFAULT, CW_USEDEFAULT, WIDTH, HEIGHT,
+        nullptr, nullptr, hInstance, nullptr);
 
     if (!hwnd) return -1;
 
@@ -105,9 +108,17 @@ int main() {
     }
 
     int screen = DefaultScreen(display);
-    Window window = XCreateSimpleWindow(display, RootWindow(display, screen),
-        0, 0, WIDTH, HEIGHT, 1, BlackPixel(display, screen), WhitePixel(display, screen));
+    XSizeHints hints;
+    hints.flags = PSize | PMinSize | PMaxSize;
+    hints.min_width = hints.max_width = WIDTH;
+    hints.min_height = hints.max_height = HEIGHT;
 
+    Window window = XCreateSimpleWindow(
+        display, RootWindow(display, screen),
+        0, 0, WIDTH, HEIGHT, 1,
+        BlackPixel(display, screen), WhitePixel(display, screen));
+
+    XSetNormalHints(display, window, &hints); // Set fixed window size
     XSelectInput(display, window, ExposureMask);
     XMapWindow(display, window);
 
