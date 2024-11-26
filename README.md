@@ -2,21 +2,22 @@
 A window with a mandel-brot pattern inside it.
 
 ## Issues:
-- Loads way to slow and doesn't scale correctly when fullscreen on Windows.
+- Not enough features to show off properly.
 
 ## Controls:
-- **Arrow Keys**: Pan (up, down, left, right).
-- `+/-` **or** Add/Subtract: Zoom in and out.
-- `q` **(Linux)**: Quit the application.
+- No controls are fully supported yet. When I add support for commands I will put them here.
 
 
 ## How to compile:
 
 > [!WARNING]
-> Wayland is way to complicated for me to do yet. It will only work with X11.
+> Wayland is way to complicated for me to do yet. It will only work with X11. I will not update it to work with Wayland; you will need to port if you want to use it with Wayland.
+
+> [!WARNING]
+> If using another thing other than X11 for windows to work on Linux (like Wayland) you will need to switch to X11 (this requires a restart in some cases) or port [the code](/src/main.cpp) to your desired platform for windows to work.
 
 > [!TIP]
-> If you want to compile by yourself, clone this repo and 
+> If you want to compile by yourself, clone this repo, install the X11 CPP headers and run the build commands below:
 
 - Windows:
     - Use the `g++ src/main.cpp -lgdi32 -o dist/fractalis.exe` command.

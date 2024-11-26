@@ -8,7 +8,6 @@
 #elif __linux__
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
-#include <X11/keysym.h>
 #endif
 
 const int WIDTH = 800;
@@ -64,7 +63,7 @@ int main() {
     wc.lpszClassName = "MandelbrotClass";
     RegisterClass(&wc);
 
-    HWND hwnd = CreateWindowEx(0, "MandelbrotClass", "Fractalis | Mandel-brot Set Pattern", WS_OVERLAPPEDWINDOW,
+    HWND hwnd = CreateWindowEx(0, "MandelbrotClass", "Fractalis | Mandelbrot set pattern", WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT, WIDTH, HEIGHT, nullptr, nullptr, hInstance, nullptr);
 
     if (!hwnd) return -1;
@@ -72,29 +71,12 @@ int main() {
     ShowWindow(hwnd, SW_SHOW);
     HDC hdc = GetDC(hwnd);
 
-    bool redraw = true;
+    drawMandelbrot(hdc);
+
     MSG msg = { };
-
-    while (true) {
-        while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
-            if (msg.message == WM_QUIT) return 0;
-            if (msg.message == WM_KEYDOWN) {
-                if (msg.wParam == VK_UP) centerY -= scale * 0.1;
-                if (msg.wParam == VK_DOWN) centerY += scale * 0.1;
-                if (msg.wParam == VK_LEFT) centerX -= scale * 0.1;
-                if (msg.wParam == VK_RIGHT) centerX += scale * 0.1;
-                if (msg.wParam == VK_ADD) scale /= 1.5; // Zoom in
-                if (msg.wParam == VK_SUBTRACT) scale *= 1.5; // Zoom out
-                redraw = true;
-            }
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-
-        if (redraw) {
-            drawMandelbrot(hdc);
-            redraw = false;
-        }
+    while (GetMessage(&msg, nullptr, 0, 0)) {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
     }
 
     ReleaseDC(hwnd, hdc);
@@ -126,7 +108,7 @@ int main() {
     Window window = XCreateSimpleWindow(display, RootWindow(display, screen),
         0, 0, WIDTH, HEIGHT, 1, BlackPixel(display, screen), WhitePixel(display, screen));
 
-    XSelectInput(display, window, ExposureMask | KeyPressMask);
+    XSelectInput(display, window, ExposureMask);
     XMapWindow(display, window);
 
     GC gc = XCreateGC(display, window, 0, nullptr);
@@ -135,16 +117,6 @@ int main() {
     while (true) {
         XNextEvent(display, &event);
         if (event.type == Expose) {
-            drawMandelbrot(display, window, gc);
-        } else if (event.type == KeyPress) {
-            KeySym key = XLookupKeysym(&event.xkey, 0);
-            if (key == XK_Up) centerY -= scale * 0.1;
-            if (key == XK_Down) centerY += scale * 0.1;
-            if (key == XK_Left) centerX -= scale * 0.1;
-            if (key == XK_Right) centerX += scale * 0.1;
-            if (key == XK_plus) scale /= 1.5; // Zoom in
-            if (key == XK_minus) scale *= 1.5; // Zoom out
-            if (key == XK_q) break; // Quit
             drawMandelbrot(display, window, gc);
         }
     }
