@@ -25,6 +25,7 @@ double zoomSpeed = 0.98;
 double animationTime = 0.0;
 double animationSpeed = 0.01;
 
+// Random colour
 unsigned long getRandomColor() {
     return (rand() % 256) << 16 | (rand() % 256) << 8 | (rand() % 256);
 }
@@ -44,6 +45,8 @@ int computeMandelbrot(double x0, double y0) {
 
 // Windows specific code
 #ifdef _WIN32
+
+// Draws the Mandelbrot
 void drawMandelbrot(HDC hdc) {
     animationTime += animationSpeed;
     zoomFactor *= zoomSpeed;
@@ -104,7 +107,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
     return 0;
 }
 
+// Main function
 int main() {
+
+    // Creates a Window
     WNDCLASS wc = { 0 };
     wc.lpfnWndProc = WindowProc;
     wc.hInstance = GetModuleHandle(0);
@@ -129,6 +135,8 @@ int main() {
 
 // Linux specific code
 #elif __linux__
+
+// Draws the Mandelbrot
 void drawMandelbrot(Display* display, Window window, GC gc) {
     animationTime += animationSpeed;
     zoomFactor *= zoomSpeed;
@@ -158,6 +166,8 @@ void drawMandelbrot(Display* display, Window window, GC gc) {
 }
 
 int main() {
+
+    // Creates window
     Display* display = XOpenDisplay(NULL);
     if (!display) {
         std::cerr << "Unable to open X display." << std::endl;
