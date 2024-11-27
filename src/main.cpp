@@ -1,7 +1,11 @@
+// Fractalis - src/main.cpp
+
+// Main base libs
 #include <iostream>
 #include <cmath>
 #include <ctime>
 
+// Platform specific libs
 #ifdef _WIN32
 #include <windows.h>
 #elif __linux__
@@ -9,6 +13,7 @@
 #include <X11/Xutil.h>
 #endif
 
+// Variable values
 const int WIDTH = 800;
 const int HEIGHT = 600;
 const int MAX_ITER = 1000;
@@ -24,6 +29,7 @@ unsigned long getRandomColor() {
     return (rand() % 256) << 16 | (rand() % 256) << 8 | (rand() % 256);
 }
 
+// Makes the Mandelbrot
 int computeMandelbrot(double x0, double y0) {
     double x = 0.0, y = 0.0;
     int iter = 0;
@@ -36,6 +42,7 @@ int computeMandelbrot(double x0, double y0) {
     return iter;
 }
 
+// Windows specific code
 #ifdef _WIN32
 void drawMandelbrot(HDC hdc) {
     animationTime += animationSpeed;
@@ -120,6 +127,7 @@ int main() {
     return 0;
 }
 
+// Linux specific code
 #elif __linux__
 void drawMandelbrot(Display* display, Window window, GC gc) {
     animationTime += animationSpeed;
