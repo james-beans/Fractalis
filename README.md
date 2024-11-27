@@ -7,6 +7,10 @@ A window with a mandel-brot pattern inside it.
 ## Controls:
 - No controls are fully supported yet. When I add support for commands I will put them here.
 
+## Dependencies:
+- Windows SDK (might be installed already but check even if)
+- MinGW (for compiling using gcc and g++)
+- X11 CPP Headers
 
 ## How to compile:
 
@@ -17,10 +21,10 @@ A window with a mandel-brot pattern inside it.
 > If using another thing other than X11 for windows to work on Linux (like Wayland) you will need to switch to X11 (this requires a restart in some cases) or port [the code](/src/main.cpp) to your desired platform for windows to work.
 
 > [!TIP]
-> If you want to compile by yourself, clone this repo, install the X11 CPP headers and run the build commands below:
+> If you want to compile by yourself, clone this repo, install the dependencies and run the build commands below:
 
 - Windows:
-    - Use the `g++ src/main.cpp -lgdi32 -o dist/fractalis.exe` command.
+    - Use the `g++ src/main.cpp -lgdi32 -mwindows -o dist/fractalis.exe` command.
 
 - Linux:
     - Use the `g++ src/main.cpp -lX11 -o dist/fractalis` command with X11.
