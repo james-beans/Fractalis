@@ -1,6 +1,9 @@
 # Fractalis
 A window with a mandel-brot pattern inside it.
 
+> [!WARNING]
+> This project is discontinued. It might get a few updates, but for now this is discontinued.
+
 ## Features:
 - Cross-platform (Windows and Linux only)
 - Animates automatically
